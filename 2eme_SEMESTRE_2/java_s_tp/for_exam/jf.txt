@@ -1,0 +1,44 @@
+nah 3andi ken l code ma3a l 2asaf
+hetha exemple 3mlneh fl tp
+
+
+
+{
+  "name": "ISTIC channel",
+  "short_name": "ISTIC",
+  "icons": [
+    {
+      "src": "assets/AppImages/windows11/SmallTile.scale-100.png",
+      "sizes": "71x71"
+    },
+    {
+      "src": "assets/AppImages/android/android-launchericon-512-512.png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "assets/AppImages/ios/16.png",
+      "sizes": "16x16"
+    }
+  ],
+  "prefer_related_applications": false,
+  "start_url": "/id=xxx",
+  "id":"xxx",
+  "theme_color": "#0b4877",
+  "background_color": "#0b4877",
+  "display": "standalone",
+  "description": "bla bla bla",
+  "screenshots":[
+    {
+      "src": "assets/wide.jpg",
+      "type": "image/jpg",
+      "sizes": "720x540",
+      "form-factor": "narrow"
+    },
+    {
+      "src": "assets/unset.jpg",
+      "type": "image/jpg",
+      "sizes": "540x720",
+      "form-factor": "wide"
+    }
+  ]
+}

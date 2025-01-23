@@ -1,0 +1,13 @@
+1- create big file tablespace 'tbs-cours' datafile 'c:\......' size 100M auto extend 
+
+-8- create user user_compta identified by compta default tablespace tbs_compta ;
+    grant create session to user_compta ;	
+    grant insert , update , delete , select on facture_compta to user_compta ;
+    create user user_commerece identified by commerce default tablespace tbs_commerce ;
+    grant create session to user_commerce ; ;
+    grant insert , upadate , delete , select on client_commerce to user_commerce ;
+
+
+-9- connect user_compta/compta ;
+    insert sys.facture_compta values (10,1000,todate('yyyy-mm-dd','2024-02-24'));
+    

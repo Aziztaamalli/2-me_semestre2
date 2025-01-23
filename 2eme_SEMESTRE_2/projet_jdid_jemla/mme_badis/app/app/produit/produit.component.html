@@ -1,0 +1,12 @@
+<table>
+  <tr>
+    <th>Id</th> <th>Title</th><th>Price</th><th>Image</th>
+  </tr>
+  <tr *ngFor="let p of lesProduits">
+  <td>{{p.id}}</td>
+  <td>{{p.title}}</td>
+  <td>{{p.price}}</td>
+  <td><img [src]='p.image' width="150" height="150"></td>
+  </tr>
+
+</table>

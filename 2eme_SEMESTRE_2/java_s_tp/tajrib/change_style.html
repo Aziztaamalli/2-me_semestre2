@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Example</title>
+    <style>
+        .highlighted {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <p id="text">This is a paragraph.</p>
+    <button onclick="highlight()">Highlight Text</button>
+
+    <script>
+        function highlight() {
+            // Get the paragraph element
+            var paragraph = document.getElementById('text');
+            
+            // Add the 'highlighted' class to change its style
+            paragraph.classList.add('highlighted');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+import nltk  # Import the Natural Language Toolkit library
+import re  # Import the regular expressions library
+from nltk.corpus import stopwords  # Import stopwords from NLTK corpus
+from nltk.stem import SnowballStemmer  # Import SnowballStemmer from NLTK stem module
+
+nltk.download('snowball_data')  # Download necessary data for Snowball stemmer
+nltk.download('stopwords')  # Download stopwords for the first time
+
+stop_list = set(stopwords.words('french'))  # Create a set of French stopwords
+
+def stem_lst(fichier):
+    # Function to tokenize, filter, and stem words in a document
+    with open(fichier, 'r') as file:
+        content = file.read()  # Read content from the file
+    content = content.lower()  # Convert text to lowercase
+    tokens = re.split(r"\W", content)  # Tokenize text using regex
+    mots = [t for t in tokens if not (re.match(r"([0-9]+-?)+", t)) and t not in stop_list]  # Filter tokens
+    stemmer = SnowballStemmer("french")  # Initialize French Snowball stemmer
+    stems = [stemmer.stem(mot) for mot in mots]  # Stem words
+    return stems
+
+# Define a function to calculate Term Frequency (TF) for each stemmed word in a document
+def TF(fichier):
+    stems = stem_lst(fichier)  # Tokenize, filter, and stem words in the document
+    dictionnaire = {}  # Initialize an empty dictionary
+    for item in set(stems):
+        dictionnaire[item] = stems.count(item)  # Count frequency of each stemmed word
+    return dictionnaire
+
+# Define a function to build a global dictionary containing TF for each stemmed word in each document
+def dictionnaire_global():
+    liste_doc = ['/content/collection/doc' + str(i) + '.txt' for i in range(1, 11)]  # List of document paths
+    dic1 = {}  # Initialize an empty dictionary
+    for fich in liste_doc:
+        dic1[fich] = TF(fich)  # Calculate TF for each document
+    return dic1
+
+# Define a function to calculate Inverse Document Frequency (IDF) for a given term across all documents
+def IDF(terme):
+    N = 0  # Initialize counter variable
+    for i in ['/content/collection/doc' + str(i) + '.txt' for i in range(1, 11)]:
+        stems = stem_lst(i)  # Tokenize, filter, and stem words in the document
+        if terme in stems:
+            N += 1  # Increment counter if term is found in document
+            break
+    return 1 / N  # Calculate and return IDF
+
+# Define a function to calculate the weight of a term in a document by multiplying its TF by its IDF
+def poids(stem, doc):
+    return TF(doc)[stem] * IDF(stem)  # Calculate and return term weight
+
+def fichier_inverse():
+    # Function to generate an inverted index file containing the weights of each term in each document
+    rExp = r"doc[0-9]+"  # Regex pattern for document names
+    with open('fichier-inverse.txt', 'w') as f:  # Open output file in write mode
+        dg = dictionnaire_global()  # Build global dictionary containing TF for each term in each document
+        for fich in dg.keys():
+            for stem in dg[fich].keys():
+                match = re.search(rExp, fich)  # Match document name
+                ligne = stem + '---' + match.group(0) + '---' + str(poids(stem, fich)) + '\n'  # Format output line
+                f.write(ligne)  # Write to output file
+    with open('fichier-inverse.txt', 'r') as file:  # Open output file in read mode
+        content = file.read()  # Read contents of the file
+        print(content)  # Print contents of the inverted index file
+
+# Execute the function to generate the inverted index file
+fichier_inverse()
+
+# Define a function to stem words in a query
+def stemming_requete(requete):
+    req = requete.lower()  # Convert query to lowercase
+    tokens = re.split(r"\W", req)  # Tokenize query using regex
+    mots = [t for t in tokens if not (re.match(r"([0-9]+-?)+", t)) and t not in stop_list]  # Filter tokens
+    stemmer = SnowballStemmer("french")  # Initialize French Snowball stemmer
+    stems = [stemmer.stem(mot) for mot in mots]  # Stem words
+    return stems
+
+# Define a function to calculate Term Frequency (TF) for each stemmed word in a query
+def TF_requete(requete):
+    dictionnaire = {}  # Initialize an empty dictionary
+    req = stemming_requete(requete)  # Stem words in the query
+    for item in set(req):
+        dictionnaire[item] = req.count(item)  # Count frequency of each stemmed word
+    return dictionnaire
+
+def RSV(doc, requete):
+    # Function to calculate the cosine similarity between a document and a query
+    import math  # Import math module
+    req = stemming_requete(requete)  # Stem words in the query
+    dict_p = {}  # Initialize an empty dictionary
+    nominateur = 0  # Initialize numerator variable
+    # Extract word weights from the inverted index file for the given document
+    with open('fichier-inverse.txt', 'r') as file:
+        content = file.read()  # Read contents of the file
+        lines = content.splitlines()  # Split contents into lines
+        for line in lines:
+            if re.match(r"^[a-z]+" + "---" + "doc" + str(doc) + r"---[0-9].[0-9]", line):
+                mot = re.search(r"[a-z]+", line).group()  # Extract stemmed word
+                dict_p[mot] = re.search(r"[0-9]+.[0-9]", line).group()  # Extract word weight
+    # Calculate the cosine similarity score between the document and the query
+    for term in req:
+        if term in dict_p.keys():
+            nominateur += float(dict_p[term]) * 1  # Calculate numerator
+    sqrt_p_doc = 0  # Initialize square root of document weight variable
+    sum_p_doc = 0  # Initialize sum of document weights variable
+    for poids in dict_p.values():
+        sum_p_doc += float(poids) ** 2  # Calculate sum of document weights
+    sqrt_p_doc = math.sqrt(sum_p_doc)  # Calculate square root of document weight
+    sum_p_requete = sum(map(lambda x: x ** 2, TF_requete(requete).values()))  # Calculate sum of query weights
+    sqrt_p_requete = math.sqrt(sum_p_requete)  # Calculate square root of query weight
+    RSV = (nominateur) / ((sqrt_p_requete) * (sqrt_p_doc))  # Calculate cosine similarity score
+    return [("doc" + str(doc), RSV)]  # Return document name and its relevance score
+
+def RSV_corpus_cosinus(requete, indice):
+    # Function to calculate cosine similarity scores between a query and all documents
+    RSV_corpus = [RSV(doc, requete) for doc in range(1, 11)]  # Calculate RSV for each document
+    sorted_RSV = sorted(RSV_corpus, key=lambda x: x[0][1], reverse=True)  # Sort documents by relevance score
+    print("The " + str(indice) + " most relevant documents according to the query, cosine metric:")
+    for i in range(0, indice):
+        print(sorted_RSV[i])  # Print the top relevant documents
+
+# Execute the function to find the most relevant documents for the given query
+RSV_corpus_cosinus("gard nom fer bien", 7)

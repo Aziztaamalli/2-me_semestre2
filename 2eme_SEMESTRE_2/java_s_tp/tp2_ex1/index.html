@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form and Table Example</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Form -->
+        <h2>Form</h2>
+        <form>
+            <div class="form-group">
+                <label for="name">Nom</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter Name">
+            </div>
+            <div class="form-group">
+                <label for="birthdate">Date de naissance</label>
+                <input type="date" class="form-control" id="birthdate">
+            </div>
+            <button type="submit" class="btn btn-primary">Analyze Me</button>
+        </form>
+
+        <!-- Table -->
+        <h2 class="mt-5">Table</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Nationalité</th>
+                    <th>Date de naissance</th>
+                    <th>Comme ce jour</th>
+                    <th>Âge</th>
+                    <th>Fait sur l'âge</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table data goes here -->
+                <!-- Example Row -->
+                <tr>
+                    <td>John Doe</td>
+                    <td>French</td>
+                    <td>1990-01-01</td>
+                    <td>Today's Fact</td>
+                    <td>33</td>
+                    <td>Interesting Age Fact</td>
+                </tr>
+                <!-- Populate table with actual data -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

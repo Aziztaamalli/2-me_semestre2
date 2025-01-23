@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product App - Ajouter Produit</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Product Management System</a>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="index.html">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="add.html">Add Product</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="update.html">update product</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="delete.html">delete Product</a>
+      </li>
+    </ul>
+  </nav>
+  <div class="container mt-5">
+    <h2>Ajouter un Produit</h2>
+    <form id="addForm">
+      <div class="form-group">
+        <label for="name">Nom:</label>
+        <input type="text" class="form-control" id="name" required>
+      </div>
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea class="form-control" id="description" rows="3"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="price">Prix:</label>
+        <input type="number" class="form-control" id="price" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Ajouter Produit</button>
+    </form>
+  </div>
+  <script src="js/script.js"></script>
+  <script>
+    document.getElementById('addForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const name = document.getElementById('name').value;
+      const description = document.getElementById('description').value;
+      const price = document.getElementById('price').value;
+      
+      const data = {
+        name: name,
+        description: description,
+        price: parseFloat(price)
+      };
+      
+      fetch('https://api.restful-api.dev/objects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erreur lors de l\'ajout du produit.');
+        }
+        return response.json();
+      })
+      .then(data => {
+        alert('Produit ajouté avec succès!');
+        // Rediriger vers la page d'accueil ou faire d'autres actions nécessaires
+        window.location.href = 'index.html';
+      })
+      .catch(error => {
+        console.error('Erreur:', error);
+        alert('Une erreur s\'est produite lors de l\'ajout du produit.');
+      });
+    });
+  </script>
+</body>
+</html>

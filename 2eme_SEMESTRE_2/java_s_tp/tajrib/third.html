@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Example</title>
+</head>
+<body>
+    <div id="container">
+        <!-- Elements will be added here dynamically -->
+    </div>
+
+    <script>
+        // Create a new paragraph element
+        var paragraph = document.createElement('h3');//lahne tnajem tbadel ya p ya h1 wlla li t7eb
+        
+        // Set its text content
+        paragraph.textContent = 'This is a dynamically created paragraph.';
+
+        // Get the container element
+        var container = document.getElementById('container');
+
+        // Append the paragraph to the container
+        container.appendChild(paragraph);
+    </script>
+</body>
+</html>

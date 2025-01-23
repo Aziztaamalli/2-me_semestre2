@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Example</title>
+</head>
+<body>
+    <h1 id="heading">Hello World</h1>
+    <button id="changeText">Change Text</button>
+
+    <script>
+        // Get the element with id 'heading'
+        var heading = document.getElementById('heading');
+
+        // Change the text content of the heading
+        //heading.textContent = 'Welcome to my website!';
+
+        // Add an event listener to the button
+        document.getElementById('changeText').addEventListener('click', function() {
+            heading.textContent = 'Text changed!';
+        });
+    </script>
+</body>
+</html>

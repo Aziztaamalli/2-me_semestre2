@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Weather App</h1>
+<form id="weather-form">
+<label for="city-input">Ville :</label>
+<input type="text" id="city-input" name="city">
+<label for="country-input">Pays :</label>
+<input type="text" id="country-input" name="country">
+<button type="submit">Rechercher</button>
+</form>
+<div class="card">
+<div class="card-header">
+<h5 class="card-title">Météo actuelle pour <span id="city-name"></span></h5>
+<h6 class="card-subtitle mb-2 text-muted">Dernière mise à jour :
+<span id="update-time" > </span>
+</h6>
+</div>
+<div class="card-body">
+<div class="row">
+<div class="col-md-4">
+<img id="weather-icon" src="" alt="" class="img-fluid">
+</div>
+<div class="col-md-8">
+<h1 id="temperature" class="display-1"></h1>
+<h2 id="weather-description" class="h3"></h2>
+</div>
+</div>
+</div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+salir------doc1.txt-----0.1
+rue------doc1.txt-----0.3
+excuser------doc1.txt-----0.1
+homme-sandwich------doc1.txt-----0.1
+donner------doc1.txt-----0.1
+prospectus------doc1.txt-----0.1
+armée------doc1.txt-----0.1
+salut------doc1.txt-----0.1
+plaisir------doc1.txt-----0.1
+cristal------doc1.txt-----0.1
+plante------doc1.txt-----0.1
+coeur------doc1.txt-----0.1
+heureux------doc1.txt-----0.1
+désir------doc1.txt-----0.1
+grâce------doc1.txt-----0.1
+éboueur------doc1.txt-----0.1
+mécanique------doc1.txt-----0.1

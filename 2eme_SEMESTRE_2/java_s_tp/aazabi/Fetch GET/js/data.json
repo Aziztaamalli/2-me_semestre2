@@ -1,0 +1,19 @@
+//INPUT
+{
+    "title": 'foo',
+    "body": 'bar',
+    "userId": 1
+}
+//OUTPUT
+{
+    "id": 101,
+    "title": 'foo',
+    "body": 'bar',
+    "userId": 1
+  }
+
+//URL
+https://jsonplaceholder.typicode.com/posts
+
+//METHOD
+POST

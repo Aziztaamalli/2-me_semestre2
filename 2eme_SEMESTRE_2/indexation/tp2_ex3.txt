@@ -1,0 +1,96 @@
+import os
+from collections import defaultdict
+from nltk.stem import SnowballStemmer
+from nltk.tokenize import word_tokenize
+
+# Fonction pour récupérer la liste des mots stem d'un document
+def get_stems(document):
+    stemmer = SnowballStemmer("french")
+    tokens = word_tokenize(document.lower())
+    stems = [stemmer.stem(token) for token in tokens]
+    return stems
+
+# Fonction pour calculer les fréquences des mots dans un document
+def calculate_term_frequencies(stems):
+    term_freq = defaultdict(int)
+    for stem in stems:
+        term_freq[stem] += 1
+    return term_freq
+
+# Fonction pour calculer les fréquences des mots dans chaque document
+def calculate_document_term_frequencies(documents):
+    doc_term_freq = {}
+    for doc_id, doc_content in documents.items():
+        stems = get_stems(doc_content)
+        term_freq = calculate_term_frequencies(stems)
+        doc_term_freq[doc_id] = term_freq
+    return doc_term_freq
+
+# Fonction pour calculer l'IDF (Inverse Document Frequency) d'un mot
+def calculate_inverse_document_frequency(term, doc_term_freq):
+    num_docs = len(doc_term_freq)
+    num_docs_with_term = sum(1 for doc_freq in doc_term_freq.values() if term in doc_freq)
+    idf = 1 + math.log(num_docs / (1 + num_docs_with_term))
+    return idf
+
+# Fonction pour calculer le poids W d'un mot dans chaque document
+def calculate_term_weights(doc_term_freq, doc_idfs):
+    term_weights = {}
+    for doc_id, term_freq in doc_term_freq.items():
+        doc_weights = {}
+        for term, freq in term_freq.items():
+            idf = doc_idfs[term]
+            weight = freq * idf
+            doc_weights[term] = weight
+        term_weights[doc_id] = doc_weights
+    return term_weights
+
+# Fonction pour construire le fichier inversé
+def build_inverted_file(doc_term_freq, term_weights):
+    inverted_file = defaultdict(dict)
+    for doc_id, term_freq in doc_term_freq.items():
+        for term, freq in term_freq.items():
+            weight = term_weights[doc_id][term]
+            inverted_file[term][doc_id] = weight
+    return inverted_file
+
+# Fonction pour indexer le corpus de documents
+def index_corpus(corpus_path, inverted_file_path):
+    doc_term_freq = {}
+    documents = {}
+
+    # Lecture des documents et calcul des fréquences des mots
+    for filename in os.listdir(corpus_path):
+        if filename.endswith(".txt"):
+            filepath = os.path.join(corpus_path, filename)
+            with open(filepath, "r", encoding="utf-8") as file:
+                content = file.read()
+                documents[filename] = content
+                stems = get_stems(content)
+                term_freq = calculate_term_frequencies(stems)
+                doc_term_freq[filename] = term_freq
+    
+    # Calcul des fréquences des mots dans chaque document
+    doc_idfs = {}
+    for term in set(term for term_freq in doc_term_freq.values() for term in term_freq):
+        idf = calculate_inverse_document_frequency(term, doc_term_freq)
+        doc_idfs[term] = idf
+    
+    # Calcul des poids des mots dans chaque document
+    term_weights = calculate_term_weights(doc_term_freq, doc_idfs)
+    
+    # Construction du fichier inversé
+    inverted_file = build_inverted_file(doc_term_freq, term_weights)
+    
+    # Écriture du fichier inversé
+    with open(inverted_file_path, "w", encoding="utf-8") as file:
+        for term, doc_weights in inverted_file.items():
+            file.write(term)
+            for doc_id, weight in doc_weights.items():
+                file.write(f"----{doc_id}-----{weight}")
+            file.write("\n")
+
+# Exécution du programme
+corpus_path = "/chemin/vers/le/dossier/documents"
+inverted_file_path = "fich-inv.txt"
+index_corpus(corpus_path, inverted_file_path)

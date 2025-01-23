@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DOM Example</title>
+</head>
+<body>
+    <ul id="list">
+        <li>Item 2</li>
+        <li>Item 1</li>
+        <li>Item 3</li></ul>
+    <button type="button" id="su">remove item </button>
+    <script>
+        document.getElementById("su").addEventListener("click", removeItem)
+        function removeItem() {
+            var list = document.getElementById('list');
+            var firstItem = list.firstElementChild;
+            list.removeChild(firstItem);}
+    </script>
+</body>
+</html>

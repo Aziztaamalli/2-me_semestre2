@@ -1,0 +1,5 @@
+[
+    {"cin":"01234567","nom":"BenMahmoud","prenom":"Yosra","date_naissance":"2000-08-12","clubs":["tunivisions","gdc","MDN"],"redoublant":"False","moyenne":10.75},
+    {"cin":"12345678","nom":"Salem","prenom":"Mohamed","date_naissance":"2000-01-20","clubs":["tunivisions","gdc","enactus"],"redoublant":"True","moyenne":16.75},
+    {"cin":"23456789","nom":"Soltani","prenom":"Rahma","date_naissance":"2000-02-05","clubs":["tunivisions","gdc","enactus"],"redoublant":"False","moyenne":18}
+]
